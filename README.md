@@ -82,6 +82,8 @@ mg::Application* CreateApplication(int argc, char** argv)
 ```
 ![image](https://github.com/Byte-White/Magma/assets/51212450/e3990173-b87e-469e-b29e-bf1628c02207)
 
+**You can also use the [template](https://github.com/Byte-White/Magma-Template)**
+
 ## Contributing
 
 We welcome contributions from the community. If you encounter any issues or have suggestions for improvement, please open an issue or submit a pull request on the [GitHub repository](https://github.com/Byte-White/Magma).
