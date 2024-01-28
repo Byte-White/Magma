@@ -1,0 +1,7 @@
+# directories
+.vscode/
+.vs/
+build/
+# files
+*.exe
+imgui.ini
