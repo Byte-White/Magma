@@ -52,7 +52,7 @@ namespace mg
         // Load GLAD
         if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
         {
-            std::cerr << "Failed to initialize GLAD!" << std::endl;
+            MAGMA_CORE_ERROR("Failed to initialize GLAD!");
             return false;
         }
 

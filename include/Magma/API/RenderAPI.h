@@ -1,4 +1,6 @@
 #include "imgui.h"
+#include "Magma/Core/Logging.h"
+
 #ifndef MAGMA_RENDERAPI_H
 #define MAGMA_RENDERAPI_H
 

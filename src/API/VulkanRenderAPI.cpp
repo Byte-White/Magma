@@ -29,7 +29,7 @@ namespace mg
         *app->GetWindow() = glfwCreateWindow(app->GetWidth(), app->GetHeight(), app->GetTitle().c_str(), nullptr, nullptr);
         if (!glfwVulkanSupported())
         {
-            printf("GLFW: Vulkan Not Supported\n");
+            MAGMA_CORE_ERROR("GLFW: Vulkan Not Supported");
             return false;
         }
 

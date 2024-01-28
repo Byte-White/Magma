@@ -5,6 +5,7 @@
 #include "Magma/API/RenderAPI.h"
 #include "Magma/API/OpenGLRenderAPI.h"
 #include "Magma/API/VulkanRenderAPI.h"
+#include "Magma/Core/Logging.h"
 
 // To be defined by the user as an entrypoint
 // arguments: argc and argv
@@ -13,19 +14,30 @@ namespace mg { extern mg::RenderAPI* renderer; }
 
 int main(int argc,char** argv)
 {
+	mg::Log::Init();
+	
 	mg::app = CreateApplication(argc, argv);
 
 	#if defined(MAGMA_OPENGL_ENABLED)
 	mg::app->renderer = new mg::OpenGLRenderAPI();
+	#ifdef __EMSCRIPTEN__
+	MAGMA_CORE_INFO("WebGL API selected.");
+	#else
+	MAGMA_CORE_INFO("OpenGL API selected.");
+	#endif
 	#elif defined(MAGMA_VULKAN_ENABLED)
 	mg::app->renderer = new mg::VulkanRenderAPI();
+	MAGMA_CORE_INFO("Vulkan API selected.");
 	#else
 	#error "Select an API"
 	#endif
 
 	// Init after creating the application to get the title
 	if (!mg::app->renderer->Init())
+	{
+		MAGMA_CORE_ERROR("Could not initialize renderer.");
 		return 1;
+	}
 	mg::app->Run();
 
 	mg::app->renderer->Destroy();
