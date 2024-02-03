@@ -38,6 +38,8 @@ int main(int argc,char** argv)
 		MAGMA_CORE_ERROR("Could not initialize renderer.");
 		return 1;
 	}
+	else MAGMA_CORE_INFO("Renderer Initialized.");
+
 	mg::app->Run();
 
 	mg::app->renderer->Destroy();

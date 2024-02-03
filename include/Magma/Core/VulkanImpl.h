@@ -18,10 +18,6 @@
 namespace mg
 {
 	extern Application* app;
-	namespace entrypoint
-	{
-		extern ImGui_ImplVulkanH_Window* wd;
-	}
 	void glfw_error_callback(int error, const char* description);
 
 	namespace vk 

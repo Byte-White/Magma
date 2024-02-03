@@ -15,6 +15,7 @@ namespace mg
 		Application();
 		~Application();
 		void Run();
+		virtual void Init()	  {}
 		virtual void Render() {}
 		void SetClearColor(ImVec4 color);
 		inline GLFWwindow** GetWindow()

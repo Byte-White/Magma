@@ -17,3 +17,4 @@
 #include "Core/VulkanImpl.h"
 #include "Application/Application.h"
 #include "Core/EntryPoint.h"
+#include "Application/Image.h"

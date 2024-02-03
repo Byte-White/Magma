@@ -1,4 +1,6 @@
 #include "RenderAPI.h"
+#include "functional"
+#include "vulkan/vulkan.h"
 #ifndef MAGMA_VULKANRENDERAPI_H
 #define MAGMA_VULKANRENDERAPI_H
 
@@ -14,6 +16,10 @@ namespace mg
 		void Destroy();
 		void NewFrame();
 		void Render();
+
+		void SubmitResourceFree(std::function<void()>&& func);
+		VkCommandBuffer GetCommandBuffer(bool begin);
+		void FlushCommandBuffer(VkCommandBuffer commandBuffer);
 	private:
 	};
 }

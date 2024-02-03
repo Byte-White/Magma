@@ -17,13 +17,13 @@ namespace mg
 		}
 		void Application::Run()
 		{
-            
+            Init();
             #ifdef __EMSCRIPTEN__
             ImGui::GetIO().IniFilename = nullptr;
             EMSCRIPTEN_MAINLOOP_BEGIN
-                #else
-            while (!glfwWindowShouldClose(window))
-                #endif
+            #else
+            while (!glfwWindowShouldClose(window) && is_running)
+            #endif
             {
                 renderer->NewFrame();
 

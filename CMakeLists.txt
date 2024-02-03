@@ -15,9 +15,12 @@ set(IMGUI_SOURCE
 
 set(MAGMA_SOURCE
     src/Core/VulkanImpl.cpp
+    src/Core/Logging.cpp
     src/API/VulkanRenderAPI.cpp
     src/API/OpenGLRenderAPI.cpp
     src/Application/Application.cpp
+    src/Application/ImageImplVulkan.cpp
+    src/Application/ImageImplOpenGL.cpp
 )
 
 add_subdirectory(vendor)
@@ -74,6 +77,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
     stb_image
     Vulkan::Vulkan
     glad::glad
+    spdlog
 )
 
 add_library(magma ALIAS ${PROJECT_NAME})

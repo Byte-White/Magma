@@ -15,6 +15,12 @@
 
 namespace mg
 {
+    void GLAPIENTRY errorCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam) {
+        MAGMA_CORE_ERROR("OpenGL Error: {0}",message);
+        MAGMA_CORE_WARN("Source: {0} , Type: {1} , ID: {2} , Severity: {3}",source,type,id,severity);
+    }
+
+
     // Defined in VulkanImpl
     void glfw_error_callback(int error, const char* description);
 
@@ -28,7 +34,6 @@ namespace mg
     }
     bool OpenGLRenderAPI::Init()
     {
-        
         glfwSetErrorCallback(glfw_error_callback);
         if (!glfwInit())
             return false;
@@ -42,6 +47,8 @@ namespace mg
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);             
         
+        
+
         // Create window with graphics context
         *app->GetWindow() = glfwCreateWindow(app->GetWidth(), app->GetHeight(), app->GetTitle().c_str(), nullptr, nullptr);
         if (app->GetWindow() == nullptr)
@@ -55,6 +62,9 @@ namespace mg
             MAGMA_CORE_ERROR("Failed to initialize GLAD!");
             return false;
         }
+
+        glEnable(GL_DEBUG_OUTPUT);
+        glDebugMessageCallback(errorCallback, nullptr);
 
         // Setup Dear ImGui context
         IMGUI_CHECKVERSION();

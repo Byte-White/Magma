@@ -6,12 +6,6 @@
 
 namespace mg
 {
-    namespace entrypoint
-    {
-        ImGui_ImplVulkanH_Window* wd;
-        ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-    }
-
     void glfw_error_callback(int error, const char* description)
     {
         MAGMA_CORE_ERROR("GLFW Error {0}: {1}", error, description);
