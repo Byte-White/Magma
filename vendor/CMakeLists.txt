@@ -5,6 +5,7 @@ add_subdirectory(glfw)
 add_subdirectory(stb_image)
 # add_subdirectory(glm) # might add it in the future
 add_subdirectory(glad)
+add_subdirectory(spdlog)
 
 
 find_package(Vulkan REQUIRED)
