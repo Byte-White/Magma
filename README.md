@@ -46,6 +46,7 @@ magma
 3. Create a main file (in this case `Sandbox/src/main.cpp`)
 
 ```c++
+#define MAGMA_ENTRYPOINT
 #include "Magma/Magma.h"
 
 class MyApplication:public mg::Application
@@ -53,9 +54,12 @@ class MyApplication:public mg::Application
 public:
 	MyApplication()
 	{
-		window_width = 600;
-		window_height = 600;
-		window_title = "Magma Example Application";
+	}
+
+	void Init()
+	{
+ 		SetSize(600,600);
+		SetTitle("Magma Example Application");
 	}
 	~MyApplication()
 	{
