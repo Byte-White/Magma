@@ -16,5 +16,7 @@
 
 #include "Core/VulkanImpl.h"
 #include "Application/Application.h"
+#ifdef MAGMA_ENTRYPOINT
 #include "Core/EntryPoint.h"
+#endif
 #include "Application/Image.h"
