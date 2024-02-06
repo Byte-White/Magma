@@ -35,7 +35,7 @@ namespace mg {
 			return 0;
 		}
 
-		static VkFormat WalnutFormatToVulkanFormat(ImageFormat format)
+		static VkFormat FormatToVulkanFormat(ImageFormat format)
 		{
 			switch (format)
 			{
@@ -94,7 +94,7 @@ namespace mg {
 	{
 		VkResult err;
 
-		VkFormat vulkanFormat = Utils::WalnutFormatToVulkanFormat(m_Format);
+		VkFormat vulkanFormat = Utils::FormatToVulkanFormat(m_Format);
 
 		// Create the Image
 		{

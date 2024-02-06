@@ -61,6 +61,11 @@ public:
  		SetSize(600,600);
 		SetTitle("Magma Example Application");
 	}
+
+	void Destroy() override
+	{
+	}
+	
 	~MyApplication()
 	{
 
@@ -86,7 +91,15 @@ mg::Application* CreateApplication(int argc, char** argv)
 ```
 ![image](https://github.com/Byte-White/Magma/assets/51212450/e3990173-b87e-469e-b29e-bf1628c02207)
 
+> **_NOTE:_**  `#define MAGMA_ENTRYPOINT` should be before including magma and should be defined where `mg::Application* CreateApplication(int argc, char** argv)` is implemented.
+
 **You can also use the [template](https://github.com/Byte-White/Magma-Template)**
+
+## Created With This Framework
+
+### FireBridge - A Serial Monitor
+
+![image](https://github.com/Byte-White/Magma/assets/51212450/58738d9f-afb1-4dde-b7f9-382b924e5973)
 
 ## Contributing
 
