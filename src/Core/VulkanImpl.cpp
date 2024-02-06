@@ -195,12 +195,21 @@ namespace mg
             }
 
             // Create Descriptor Pool
-            // The example only requires a single combined image sampler descriptor for the font image and only uses one descriptor set (for that)
-            // If you wish to load e.g. additional textures you may need to alter pools sizes.
+
             {
                 VkDescriptorPoolSize pool_sizes[] =
                 {
-                    { VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1 },
+                    { VK_DESCRIPTOR_TYPE_SAMPLER, 1000 },
+                    { VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1000 },
+                    { VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE, 1000 },
+                    { VK_DESCRIPTOR_TYPE_STORAGE_IMAGE, 1000 },
+                    { VK_DESCRIPTOR_TYPE_UNIFORM_TEXEL_BUFFER, 1000 },
+                    { VK_DESCRIPTOR_TYPE_STORAGE_TEXEL_BUFFER, 1000 },
+                    { VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1000 },
+                    { VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, 1000 },
+                    { VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC, 1000 },
+                    { VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC, 1000 },
+                    { VK_DESCRIPTOR_TYPE_INPUT_ATTACHMENT, 1000 }
                 };
                 VkDescriptorPoolCreateInfo pool_info = {};
                 pool_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
@@ -213,8 +222,7 @@ namespace mg
             }
         }
 
-        // All the ImGui_ImplVulkanH_XXX structures/functions are optional helpers used by the demo.
-        // Your real engine/app may not use them.
+
         void SetupVulkanWindow(ImGui_ImplVulkanH_Window* wd, VkSurfaceKHR surface, int width, int height)
         {
             wd->Surface = surface;

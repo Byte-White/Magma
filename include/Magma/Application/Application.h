@@ -16,6 +16,7 @@ namespace mg
 		~Application();
 		void Run();
 		virtual void Init()	  {}
+		virtual void Destroy(){}
 		virtual void Render() {}
 		inline GLFWwindow** GetWindow()
 		{

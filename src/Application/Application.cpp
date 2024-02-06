@@ -33,6 +33,10 @@ namespace mg
                 // Rendering
                 renderer->Render();
             }
+            #ifdef __EMSCRIPTEN__
+            EMSCRIPTEN_MAINLOOP_END
+            #endif
+            Destroy();
 		}
 
         void Application::SetSize(int width, int height)
