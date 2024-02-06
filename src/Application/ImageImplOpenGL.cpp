@@ -23,7 +23,18 @@ namespace mg
     Image::Image(std::string path) : m_Filepath(std::move(path))
     {
         int width, height, channels;
-        stbi_uc* data = stbi_load(m_Filepath.c_str(), &width, &height, &channels, 0);
+        stbi_uc* data = nullptr;
+        if (stbi_is_hdr(m_Filepath.c_str()))
+        {
+            data = (stbi_uc*)stbi_loadf(m_Filepath.c_str(), &width, &height, &channels, 0);
+            m_Format = ImageFormat::RGBA32F;
+        }
+        else
+        {
+            data = stbi_load(m_Filepath.c_str(), &width, &height, &channels, 0);
+            m_Format = ImageFormat::RGBA;
+        }
+
         if (data)
         {
             m_Width = width;

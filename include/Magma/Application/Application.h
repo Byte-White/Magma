@@ -17,7 +17,6 @@ namespace mg
 		void Run();
 		virtual void Init()	  {}
 		virtual void Render() {}
-		void SetClearColor(ImVec4 color);
 		inline GLFWwindow** GetWindow()
 		{
 			return &window;
@@ -27,9 +26,11 @@ namespace mg
 		inline const int GetWidth()				{ return window_width; }
 		inline const int GetHeight()			{ return window_height; }
 		inline const std::string GetTitle()		{ return window_title; }
+		inline const ImVec4 GetClearColor()		{ return clear_color; }
 
 		void SetSize(int width,int height);
 		void SetTitle(const std::string& title);
+		void SetClearColor(ImVec4 color);
 	protected:
 		bool is_running = true;
 		ImVec4 clear_color;

@@ -62,7 +62,7 @@ namespace mg
         ImGui::CreateContext();
         ImGuiIO& io = ImGui::GetIO();
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-        io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+        //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
         io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
         //io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
         //io.ConfigViewportsNoAutoMerge = true;
@@ -128,7 +128,7 @@ namespace mg
 	void VulkanRenderAPI::NewFrame()
 	{
         glfwPollEvents();
-
+        
         // Resize swap chain?
         if (mg::vk::g_SwapChainRebuild)
         {

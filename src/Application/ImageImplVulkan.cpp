@@ -57,12 +57,12 @@ namespace mg {
 
 		if (stbi_is_hdr(m_Filepath.c_str()))
 		{
-			data = (uint8_t*)stbi_loadf(m_Filepath.c_str(), &width, &height, &channels, 4);
+			data = (uint8_t*)stbi_loadf(m_Filepath.c_str(), &width, &height, &channels, 0);
 			m_Format = ImageFormat::RGBA32F;
 		}
 		else
 		{
-			data = stbi_load(m_Filepath.c_str(), &width, &height, &channels, 4);
+			data = stbi_load(m_Filepath.c_str(), &width, &height, &channels, 0);
 			m_Format = ImageFormat::RGBA;
 		}
 
@@ -92,7 +92,6 @@ namespace mg {
 
 	void Image::AllocateMemory(uint64_t size)
 	{
-
 		VkResult err;
 
 		VkFormat vulkanFormat = Utils::WalnutFormatToVulkanFormat(m_Format);
@@ -154,13 +153,14 @@ namespace mg {
 			info.minLod = -1000;
 			info.maxLod = 1000;
 			info.maxAnisotropy = 1.0f;
-			VkResult err = vkCreateSampler(vk::g_Device, &info, nullptr, &m_Sampler);
+			err = vkCreateSampler(vk::g_Device, &info, nullptr, &m_Sampler);
 			vk::check_vk_result(err);
 		}
 
 		// Create the Descriptor Set:
 		m_DescriptorSet = (VkDescriptorSet)ImGui_ImplVulkan_AddTexture(m_Sampler, m_ImageView, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
 	}
+
 
 	void Image::Release()
 	{
