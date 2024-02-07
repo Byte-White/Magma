@@ -1,3 +1,4 @@
+#ifdef MAGMA_OPENGL_ENABLED
 #include "glad/glad.h"
 #include "RenderAPI.h"
 #ifndef MAGMA_OPENGLRENDERAPI_H
@@ -18,4 +19,5 @@ namespace mg
 	private:
 	};
 }
+#endif
 #endif

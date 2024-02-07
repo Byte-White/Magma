@@ -1,3 +1,4 @@
+#ifdef MAGMA_VULKAN_ENABLED
 #ifndef MAGMA_VULKAN_IMPL_H
 #define MAGMA_VULKAN_IMPL_H
 
@@ -18,7 +19,6 @@
 namespace mg
 {
 	extern Application* app;
-	void glfw_error_callback(int error, const char* description);
 
 	namespace vk 
 	{
@@ -64,3 +64,4 @@ namespace mg
 
 #endif
 
+#endif

@@ -1,3 +1,4 @@
+#ifdef MAGMA_VULKAN_ENABLED
 #include "Magma/Core/VulkanImpl.h"
 #include "Magma/Core/Logging.h"
 
@@ -6,10 +7,6 @@
 
 namespace mg
 {
-    void glfw_error_callback(int error, const char* description)
-    {
-        MAGMA_CORE_ERROR("GLFW Error {0}: {1}", error, description);
-    }
 
     namespace vk
     {
@@ -365,3 +362,4 @@ namespace mg
 
     }
 }
+#endif

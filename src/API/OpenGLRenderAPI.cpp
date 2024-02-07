@@ -1,3 +1,4 @@
+#ifdef MAGMA_OPENGL_ENABLED
 #include "Magma/API/OpenGLRenderAPI.h"
 #include "Magma/Application/Application.h"
 
@@ -136,3 +137,4 @@ namespace mg
         glfwSwapBuffers(*app->GetWindow());
     }
 }
+#endif

@@ -1,9 +1,9 @@
+#ifdef MAGMA_OPENGL_ENABLED
 #include "Magma/Application/Image.h"
 #include "glad/glad.h"
 #include "stb_image.h"
 #include "Magma/Core/Logging.h"
 
-#ifdef MAGMA_OPENGL_ENABLED
 namespace mg 
 {
     unsigned int GetGLFromFormat(ImageFormat fmt)

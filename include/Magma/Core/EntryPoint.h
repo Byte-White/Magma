@@ -43,6 +43,7 @@ int main(int argc,char** argv)
 	mg::app->Run();
 
 	mg::app->renderer->Destroy();
+	delete mg::app->renderer;
 	delete mg::app;
 }
 

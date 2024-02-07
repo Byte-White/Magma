@@ -2,6 +2,10 @@ cmake_minimum_required(VERSION 3.3)
 
 project(Magma)
 
+option(MAGMA_VULKAN OFF "enable to use Vulkan")
+option(MAGMA_OPENGL OFF "enable to use OpenGL")
+
+
 set(IMGUI_SOURCE
     vendor/imgui/imgui.cpp
     vendor/imgui/imgui_demo.cpp
@@ -9,9 +13,14 @@ set(IMGUI_SOURCE
     vendor/imgui/imgui_tables.cpp
     vendor/imgui/imgui_widgets.cpp
     vendor/imgui/backends/imgui_impl_glfw.cpp
-    vendor/imgui/backends/imgui_impl_vulkan.cpp
-    vendor/imgui/backends/imgui_impl_opengl3.cpp
 )
+
+if(MAGMA_VULKAN)
+    list(APPEND IMGUI_SOURCE "vendor/imgui/backends/imgui_impl_vulkan.cpp")
+elseif(MAGMA_OPENGL)
+    list(APPEND IMGUI_SOURCE "vendor/imgui/backends/imgui_impl_opengl3.cpp")
+endif()
+
 
 set(MAGMA_SOURCE
     src/Core/VulkanImpl.cpp
@@ -23,7 +32,14 @@ set(MAGMA_SOURCE
     src/Application/ImageImplOpenGL.cpp
 )
 
-add_subdirectory(vendor)
+#vendor
+
+add_subdirectory(vendor/glfw)
+add_subdirectory(vendor/stb_image)
+add_subdirectory(vendor/glad)
+add_subdirectory(vendor/spdlog)
+#/vendor
+
 
 add_library(
     ${PROJECT_NAME}
@@ -32,12 +48,14 @@ add_library(
     ${MAGMA_SOURCE}
 )
 
-# used for actions
+
 if(MAGMA_VULKAN)
-add_compile_definitions(MAGMA_VULKAN_ENABLED)
+    target_compile_definitions(${PROJECT_NAME} PUBLIC MAGMA_VULKAN_ENABLED)
 endif()
 if(MAGMA_OPENGL)
-add_compile_definitions(MAGMA_OPENGL_ENABLED)
+    target_compile_definitions(${PROJECT_NAME} PUBLIC 
+    MAGMA_OPENGL_ENABLED 
+    IMGUI_IMPL_OPENGL_LOADER_NONE)
 endif()
 
 
@@ -62,8 +80,23 @@ if(MAGMA_EMSCRIPTEN)
     )
 endif()
 
+if(MAGMA_VULKAN)
+        find_package(Vulkan REQUIRED)
+        if(TARGET Vulkan::Vulkan)
+            message(STATUS "Vulkan found")
+        else()
+            message(FATAL_ERROR "Vulkan not found")
+        endif()
+    if(NOT TARGET Vulkan::Vulkan)
+            # Create an INTERFACE IMPORTED GLOBAL target for Vulkan.
+            add_library(Vulkan::Vulkan INTERFACE IMPORTED GLOBAL)
 
-find_package(Vulkan REQUIRED)
+            # Set the include directories and link libraries for Vulkan.
+            set_property(TARGET Vulkan::Vulkan PROPERTY INTERFACE_INCLUDE_DIRECTORIES ${Vulkan_INCLUDE_DIRS})
+            set_property(TARGET Vulkan::Vulkan PROPERTY INTERFACE_LINK_LIBRARIES ${Vulkan_LIBRARIES})
+    endif()
+endif()
+
 
 target_include_directories(
     ${PROJECT_NAME}
@@ -75,9 +108,21 @@ target_include_directories(
 target_link_libraries(${PROJECT_NAME} PUBLIC
     glfw
     stb_image
-    Vulkan::Vulkan
-    glad::glad
     spdlog
 )
+
+if(MAGMA_VULKAN)
+target_link_libraries( 
+    ${PROJECT_NAME} PUBLIC
+    Vulkan::Vulkan
+)
+endif()
+
+if(MAGMA_OPENGL)
+target_link_libraries( 
+    ${PROJECT_NAME} PUBLIC
+    glad::glad
+)
+endif()
 
 add_library(magma ALIAS ${PROJECT_NAME})

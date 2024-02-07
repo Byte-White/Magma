@@ -6,6 +6,10 @@ namespace mg
 {
         Application* app;
         
+        void glfw_error_callback(int error, const char* description)
+        {
+            MAGMA_CORE_ERROR("GLFW Error {0}: {1}", error, description);
+        }
 
 		Application::Application()
 		{
@@ -38,6 +42,11 @@ namespace mg
             #endif
             Destroy();
 		}
+
+        void Application::Close()
+        {
+            is_running = false;
+        }
 
         void Application::SetSize(int width, int height)
         {

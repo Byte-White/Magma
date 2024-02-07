@@ -1,3 +1,4 @@
+#ifdef MAGMA_VULKAN_ENABLED
 #include "Magma/API/VulkanRenderAPI.h"
 #include "Magma/Core/VulkanImpl.h"
 #include <iostream>
@@ -250,3 +251,4 @@ namespace mg
         vkDestroyFence(vk::g_Device, fence, nullptr);
     }
 }
+#endif

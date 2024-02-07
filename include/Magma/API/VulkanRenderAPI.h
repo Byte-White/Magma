@@ -1,3 +1,4 @@
+#ifdef MAGMA_VULKAN_ENABLED
 #include "RenderAPI.h"
 #include "functional"
 #include "vulkan/vulkan.h"
@@ -23,4 +24,5 @@ namespace mg
 	private:
 	};
 }
+#endif
 #endif

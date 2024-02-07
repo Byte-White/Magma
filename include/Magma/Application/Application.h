@@ -1,13 +1,15 @@
 #ifndef MAGMA_APPLICATION_H
 #define MAGMA_APPLICATION_H
 #include <imgui.h>
-#include <GLFW/glfw3.h>
 #include "Magma/API/RenderAPI.h"
+#define GLFW_INCLUDE_NONE
+#include <GLFW/glfw3.h>
 #include <string>
 
 namespace mg 
 {
-
+	void glfw_error_callback(int error, const char* description);
+	
 	class Application
 	{
 	public:
@@ -15,6 +17,7 @@ namespace mg
 		Application();
 		~Application();
 		void Run();
+		void Close();
 		virtual void Init()	  {}
 		virtual void Destroy(){}
 		virtual void Render() {}

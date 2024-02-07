@@ -1,11 +1,9 @@
 // Image Vulkan implementation
+#ifdef MAGMA_VULKAN_ENABLED
 #include "Magma/Application/Image.h"
 #include "Magma/Core/VulkanImpl.h"
 #include "Magma/API/VulkanRenderAPI.h"
 #include "vulkan/vulkan.h"
-
-#ifdef MAGMA_VULKAN_ENABLED
-
 
 namespace mg {
 

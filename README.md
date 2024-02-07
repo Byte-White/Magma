@@ -12,7 +12,8 @@ Magma is a simple application framework built with Dear ImGui, providing an easy
 - Easy to use
 
 ## Requirements
-* [VulkanSDK](https://vulkan.lunarg.com/sdk/home) **(Required)**
+* [CMake](https://cmake.org/download/) **(Required)**
+* [VulkanSDK](https://vulkan.lunarg.com/sdk/home) **(Optional)**
 * [Emscripten](https://emscripten.org/docs/getting_started/downloads.html) **(Optional)** 
 
 ## Getting Started
@@ -26,10 +27,13 @@ cmake_minimum_required(VERSION 3.3)
 project(MagmaExample)
 
 
-add_compile_definitions(MAGMA_VULKAN_ENABLED)
-#add_compile_definitions(MAGMA_OPENGL_ENABLED)
-#set(MAGMA_EMSCRIPTEN ON)
+set(MAGMA_VULKAN ON)
+set(MAGMA_OPENGL OFF)
+set(MAGMA_EMSCRIPTEN OFF)
 
+#add_compile_definitions(MAGMA_NO_LOGGING) #uncomment to stop all logging
+#add_compile_definitions(MAGMA_NO_CORE_LOGGING) #uncomment to stop core logging
+#add_compile_definitions(MAGMA_NO_CLIENT_LOGGING) #uncomment to stop client logging
 
 add_subdirectory(Magma)
 
