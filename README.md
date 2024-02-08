@@ -97,6 +97,8 @@ mg::Application* CreateApplication(int argc, char** argv)
 
 > **_NOTE:_**  `#define MAGMA_ENTRYPOINT` should be before including magma and should be defined where `mg::Application* CreateApplication(int argc, char** argv)` is implemented.
 
+> **After initial setup, it may be necessary to rebuild your project to ensure all configurations are properly applied.**
+
 **You can also use the [template](https://github.com/Byte-White/Magma-Template)**
 
 ## Created With This Framework
