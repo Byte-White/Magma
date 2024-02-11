@@ -52,17 +52,13 @@ namespace mg
         {
             window_width = width;
             window_height = height;
-            if (renderer->is_initialized)
-            {
+            if (renderer != nullptr)
                 glfwSetWindowSize(window, width, height);
-            }
         }
         void Application::SetTitle(const std::string& title)
         {
             window_title = title;
-            if (renderer->is_initialized)
-            {
+            if(renderer != nullptr)
                 glfwSetWindowTitle(window, title.c_str());
-            }
         }
 }
