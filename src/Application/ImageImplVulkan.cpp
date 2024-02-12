@@ -43,10 +43,35 @@ namespace mg {
 			return (VkFormat)0;
 		}
 
+		static VkFilter GetVulkanFromFilter(ImageFilter filter)
+		{
+			switch (filter)
+			{
+			case ImageFilter::Nearest:      return VK_FILTER_NEAREST;
+			case ImageFilter::Linear:       return VK_FILTER_LINEAR;
+			//case ImageFilter::Anisotropic   return;
+			//case ImageFilter::Mipmap        return;
+			case ImageFilter::None:
+				MAGMA_CORE_WARN("ImageFilter::None - using default Filter(VK_FILTER_LINEAR)");
+				return VK_FILTER_LINEAR;
+			}
+		}
+		static VkSamplerMipmapMode GetVulkanMipmapModeFromFilter(ImageFilter filter)
+		{
+			switch (filter)
+			{
+			case ImageFilter::Nearest:      return VK_SAMPLER_MIPMAP_MODE_NEAREST;
+			case ImageFilter::Linear:       return VK_SAMPLER_MIPMAP_MODE_LINEAR;
+			case ImageFilter::None:
+				MAGMA_CORE_WARN("ImageFilter::None - using default Mipmap mode(VK_SAMPLER_MIPMAP_MODE_LINEAR)");
+				return VK_SAMPLER_MIPMAP_MODE_LINEAR;
+			}
+		}
 	}
 
 
-    Image::Image(std::string path) : m_Filepath(std::move(path)) 
+    Image::Image(std::string path, ImageFilter filter)
+	: m_Filepath(std::move(path)), m_Filter(filter)
     {
 		renderer = (VulkanRenderAPI*)app->renderer;
 
@@ -75,8 +100,8 @@ namespace mg {
 		stbi_image_free(data);
     }
 
-	Image::Image(uint32_t width, uint32_t height, ImageFormat format, const void* data)
-		: m_Width(width), m_Height(height), m_Format(format)
+	Image::Image(uint32_t width, uint32_t height, ImageFormat format, const void* data, ImageFilter filter)
+		: m_Width(width), m_Height(height), m_Format(format),m_Filter(filter)
 	{
 		AllocateMemory(m_Width * m_Height * Utils::BytesPerPixel(m_Format));
 		if (data)
@@ -142,9 +167,9 @@ namespace mg {
 		{
 			VkSamplerCreateInfo info = {};
 			info.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
-			info.magFilter = VK_FILTER_LINEAR;
-			info.minFilter = VK_FILTER_LINEAR;
-			info.mipmapMode = VK_SAMPLER_MIPMAP_MODE_LINEAR;
+			info.magFilter = Utils::GetVulkanFromFilter(m_Filter);
+			info.minFilter = Utils::GetVulkanFromFilter(m_Filter);
+			info.mipmapMode = Utils::GetVulkanMipmapModeFromFilter(m_Filter);
 			info.addressModeU = VK_SAMPLER_ADDRESS_MODE_REPEAT;
 			info.addressModeV = VK_SAMPLER_ADDRESS_MODE_REPEAT;
 			info.addressModeW = VK_SAMPLER_ADDRESS_MODE_REPEAT;

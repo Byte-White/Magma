@@ -22,11 +22,20 @@ namespace mg {
         RGBA32F  
     };
 
+    enum class ImageFilter
+    {
+        None = 0,
+        Nearest,
+        Linear,
+        //Mipmap, 
+        //Anisotropic // not needed to be added for now
+    };
+
     class Image
     {
     public:
-        Image(std::string path);
-        Image(uint32_t width, uint32_t height, ImageFormat format, const void* data = nullptr);
+        Image(std::string path, ImageFilter filter = ImageFilter::Linear);
+        Image(uint32_t width, uint32_t height, ImageFormat format, const void* data = nullptr, ImageFilter filter = ImageFilter::Linear);
         ~Image();
 
         void SetData(const void* data);
@@ -49,8 +58,11 @@ namespace mg {
 
         void Resize(uint32_t width, uint32_t height);
 
-        uint32_t GetWidth() const { return m_Width; }
-        uint32_t GetHeight() const { return m_Height; }
+        inline uint32_t GetWidth() const { return m_Width; }
+        inline uint32_t GetHeight() const { return m_Height; }
+
+        inline ImageFormat GetFormat() const { return m_Format; }
+        inline ImageFilter GetFilter() const { return m_Filter; }
     private:
         void AllocateMemory(uint64_t size);
         void Release();
@@ -79,6 +91,7 @@ namespace mg {
         
         uint32_t m_Width = 0, m_Height = 0;
         ImageFormat m_Format = ImageFormat::None;
+        ImageFilter m_Filter = ImageFilter::None;
         std::string m_Filepath;
     };
 

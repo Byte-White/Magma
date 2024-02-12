@@ -6,21 +6,38 @@
 
 namespace mg 
 {
-    unsigned int GetGLFromFormat(ImageFormat fmt)
+    namespace Utils
     {
-        switch (fmt)
+        static unsigned int GetGLFromFormat(ImageFormat fmt)
         {
-            case ImageFormat::RGBA: return GL_RGBA;
-            case ImageFormat::RGBA32F: return GL_RGBA32F;
+            switch (fmt)
+            {
+                case ImageFormat::RGBA:     return GL_RGBA;
+                case ImageFormat::RGBA32F:  return GL_RGBA32F;
             
-            case ImageFormat::None:
-                MAGMA_CORE_WARN("ImageFormat::None");
-                return 0;
-            break;
+                case ImageFormat::None:
+                    MAGMA_CORE_WARN("ImageFormat::None");
+                    return 0;
+            }
+        }
+    
+        static unsigned int GetGLFromFilter(ImageFilter filter)
+        {
+            switch (filter)
+            {
+            case ImageFilter::Nearest:      return GL_NEAREST;
+            case ImageFilter::Linear:       return GL_LINEAR;
+            //case ImageFilter::Anisotropic:  return GL_LINEAR;
+            //case ImageFilter::Mipmap:       return GL_LINEAR_MIPMAP_LINEAR;
+            case ImageFilter::None:
+                MAGMA_CORE_WARN("ImageFilter::None - using default Filter(GL_LINEAR)");
+                return GL_LINEAR;
+            }
         }
     }
 
-    Image::Image(std::string path) : m_Filepath(std::move(path))
+    Image::Image(std::string path, ImageFilter filter)
+        : m_Filepath(std::move(path)), m_Filter(filter)
     {
         int width, height, channels;
         stbi_uc* data = nullptr;
@@ -49,8 +66,8 @@ namespace mg
         }
     }
 
-    Image::Image(uint32_t width, uint32_t height, ImageFormat format, const void* data)
-        : m_Width(width), m_Height(height), m_Format(format)
+    Image::Image(uint32_t width, uint32_t height, ImageFormat format, const void* data, ImageFilter filter)
+        : m_Width(width), m_Height(height), m_Format(format), m_Filter(filter)
     {
         AllocateTexture();
         if (data)
@@ -65,7 +82,7 @@ namespace mg
     void Image::SetData(const void* data)
     {
         glBindTexture(GL_TEXTURE_2D, m_TextureID);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        glTexImage2D(GL_TEXTURE_2D, 0, Utils::GetGLFromFormat(m_Format), m_Width, m_Height, 0, Utils::GetGLFromFormat(m_Format), GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, 0);
     }
@@ -88,8 +105,8 @@ namespace mg
         glBindTexture(GL_TEXTURE_2D, m_TextureID);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, Utils::GetGLFromFilter(m_Filter));
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, Utils::GetGLFromFilter(m_Filter));
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 
