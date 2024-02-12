@@ -93,7 +93,7 @@ mg::Application* CreateApplication(int argc, char** argv)
 	return new MyApplication();
 }
 ```
-![image](https://github.com/Byte-White/Magma/assets/51212450/e3990173-b87e-469e-b29e-bf1628c02207)
+![image](https://github.com/Byte-White/Magma/assets/51212450/d3fc7b5d-dbf9-4330-aed0-8be3133a15b2)
 
 > **_NOTE:_**  `#define MAGMA_ENTRYPOINT` should be before including magma and should be defined where `mg::Application* CreateApplication(int argc, char** argv)` is implemented.
 
@@ -113,4 +113,5 @@ We welcome contributions from the community. If you encounter any issues or have
 
 ## License
 
-Magma is licensed under the MIT License. See the [LICENSE](https://github.com/Byte-White/Magma/LICENSE) file for more details.
+- Magma is licensed under the MIT License. See the [LICENSE](https://github.com/Byte-White/Magma/LICENSE) file for more details.
+- Magma uses the [FiraCode](https://fonts.google.com/specimen/Fira+Code) font [Open Font License (OFL)](https://openfontlicense.org/)

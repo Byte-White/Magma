@@ -25,6 +25,7 @@ endif()
 set(MAGMA_SOURCE
     src/Core/VulkanImpl.cpp
     src/Core/Logging.cpp
+    src/API/RenderAPI.cpp
     src/API/VulkanRenderAPI.cpp
     src/API/OpenGLRenderAPI.cpp
     src/Application/Application.cpp

@@ -29,6 +29,8 @@ namespace mg
 			#endif
 		}
 		bool is_initialized = false;
+	protected:
+		void SetupTheme();
 	};
 }
 #endif
