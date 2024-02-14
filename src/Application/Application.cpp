@@ -1,6 +1,7 @@
 #include "Magma/Application/Application.h"
 #include "Magma/Core/VulkanImpl.h"
 #include "Magma/API/RenderAPI.h"
+#include "Magma/Utility/Input.h"
 
 namespace mg
 {
@@ -21,6 +22,7 @@ namespace mg
 		}
 		void Application::Run()
 		{
+            Input::SetWindow(window);
             Init();
             #ifdef __EMSCRIPTEN__
             ImGui::GetIO().IniFilename = nullptr;

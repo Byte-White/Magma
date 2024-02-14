@@ -20,3 +20,4 @@
 #include "Core/EntryPoint.h"
 #endif
 #include "Application/Image.h"
+#include "Utility/Input.h"
