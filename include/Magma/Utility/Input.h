@@ -167,10 +167,33 @@ namespace mg
 		};
 	}
 
-
-
-	class Input
+	enum class CursorMode
 	{
+		Normal = 0,
+		Hidden = 1,
+		Locked = 2
+	};
+
+	enum class CursorShape
+	{
+		Arrow = 0,
+		// IBeam,		// not supported in ImGui
+		// Crosshair,	// not supported in ImGui
+		PointingHand,
+		ResizeEW,
+		ResizeNS,
+		ResizeNWSE,
+		ResizeNESW,
+		ResizeAll,
+		NotAllowed,
+		HResize,
+		VResize
+	};
+	
+	class Input
+	{		
+		// static GLFWcursor* m_currentCursor; // not needed as SetCursorShape uses ImGui instead of glfw
+
 		static GLFWwindow* m_window;
 	public:
 		static bool IsKeyPressed(KeyCode key);
@@ -179,8 +202,9 @@ namespace mg
 		static ImVec2 GetMousePosition();
 		static float GetMouseX();
 		static float GetMouseY();
-
-		// static void SetCursorMode(CursorMode mode); // todo: implement it
+		
+		static void SetCursorMode(CursorMode mode);
+		static void SetCursorShape(CursorShape shape);
 
 		static GLFWwindow** GetWindow()
 		{

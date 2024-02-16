@@ -89,7 +89,7 @@ namespace mg
 
     void Image::Resize(uint32_t width, uint32_t height)
     {
-        if (m_Width == width && m_Height == height)
+        if (m_TextureID && m_Width == width && m_Height == height)
             return;
 
         m_Width = width;
