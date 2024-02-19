@@ -99,13 +99,21 @@ mg::Application* CreateApplication(int argc, char** argv)
 
 > **After initial setup, it may be necessary to rebuild your project to ensure all configurations are properly applied.**
 
-**You can also use the [template](https://github.com/Byte-White/Magma-Template)**
+**You can also use the [app template](https://github.com/Byte-White/Magma-Template) and the [app with layers template](https://github.com/Byte-White/Magma-Layers-Template)**
 
 ## Created With This Framework
 
 ### FireBridge - A Serial Monitor
 
 ![image](https://github.com/Byte-White/Magma/assets/51212450/58738d9f-afb1-4dde-b7f9-382b924e5973)
+
+[FireBridge repository](https://github.com/Byte-White/FireBridge)
+
+### Lightning Engine - A CPU Ray Tracing Engine
+
+![image](https://github.com/Byte-White/Lightning-Engine/assets/51212450/79343726-c5f1-4b18-9efa-1f98fed92cc5)
+
+[Lightning-Engine repository](https://github.com/Byte-White/Lightning-Engine)
 
 ## Contributing
 
