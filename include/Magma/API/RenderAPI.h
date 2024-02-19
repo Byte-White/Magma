@@ -32,5 +32,9 @@ namespace mg
 	protected:
 		void SetupTheme();
 	};
+
+	void CrimsonShadowTheme();
+	void DarkForestTheme();
+	void DeepOceanTheme();
 }
 #endif
