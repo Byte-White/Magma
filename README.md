@@ -111,7 +111,7 @@ mg::Application* CreateApplication(int argc, char** argv)
 
 ### Lightning Engine - A CPU Ray Tracing Engine
 
-![image](https://github.com/Byte-White/Lightning-Engine/assets/51212450/79343726-c5f1-4b18-9efa-1f98fed92cc5)
+![image](https://github.com/Byte-White/Lightning-Engine/assets/51212450/91126605-3cdf-4eb8-9ef2-0bf7cbf3240c)
 
 [Lightning-Engine repository](https://github.com/Byte-White/Lightning-Engine)
 
