@@ -73,7 +73,7 @@ namespace mg {
     Image::Image(std::string path, ImageFilter filter)
 	: m_Filepath(std::move(path)), m_Filter(filter)
     {
-		renderer = (VulkanRenderAPI*)app->renderer;
+		renderer = (VulkanRenderAPI*)app->GetRenderer();
 
 		int width, height, channels;
 		uint8_t* data = nullptr;

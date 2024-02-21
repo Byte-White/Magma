@@ -25,8 +25,7 @@ namespace mg
 		{
 			return &window;
 		}
-
-		RenderAPI* renderer;
+		inline RenderAPI*& GetRenderer()		{ return m_renderer; }
 		inline const int GetWidth()				{ return window_width; }
 		inline const int GetHeight()			{ return window_height; }
 		inline const std::string GetTitle()		{ return window_title; }
@@ -36,7 +35,8 @@ namespace mg
 		void SetTitle(const std::string& title);
 		void SetClearColor(ImVec4 color);
 	protected:
-		bool is_running = true;
+		RenderAPI* m_renderer;
+		bool m_running = true;
 		ImVec4 clear_color;
 		GLFWwindow* window;
 		int window_width = 1280, window_height = 720;

@@ -19,21 +19,21 @@ int main(int argc,char** argv)
 	mg::app = CreateApplication(argc, argv);
 
 	#if defined(MAGMA_OPENGL_ENABLED)
-	mg::app->renderer = new mg::OpenGLRenderAPI();
+	mg::app->GetRenderer() = new mg::OpenGLRenderAPI();
 	#ifdef __EMSCRIPTEN__
 	MAGMA_CORE_INFO("WebGL API selected.");
 	#else
 	MAGMA_CORE_INFO("OpenGL API selected.");
 	#endif
 	#elif defined(MAGMA_VULKAN_ENABLED)
-	mg::app->renderer = new mg::VulkanRenderAPI();
+	mg::app->GetRenderer() = new mg::VulkanRenderAPI();
 	MAGMA_CORE_INFO("Vulkan API selected.");
 	#else
 	#error "Select an API"
 	#endif
 
 	// Init after creating the application to get the title
-	if (!mg::app->renderer->Init())
+	if (!mg::app->GetRenderer()->Init())
 	{
 		MAGMA_CORE_ERROR("Could not initialize renderer.");
 		return 1;
@@ -42,8 +42,8 @@ int main(int argc,char** argv)
 
 	mg::app->Run();
 
-	mg::app->renderer->Destroy();
-	delete mg::app->renderer;
+	mg::app->GetRenderer()->Destroy();
+	delete mg::app->GetRenderer();
 	delete mg::app;
 }
 

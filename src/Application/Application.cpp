@@ -28,16 +28,16 @@ namespace mg
             ImGui::GetIO().IniFilename = nullptr;
             EMSCRIPTEN_MAINLOOP_BEGIN
             #else
-            while (!glfwWindowShouldClose(window) && is_running)
+            while (!glfwWindowShouldClose(window) && m_running)
             #endif
             {
-                renderer->NewFrame();
+                m_renderer->NewFrame();
 
                 // User Application Render
                 Render();
 
                 // Rendering
-                renderer->Render();
+                m_renderer->Render();
             }
             #ifdef __EMSCRIPTEN__
             EMSCRIPTEN_MAINLOOP_END
@@ -47,20 +47,20 @@ namespace mg
 
         void Application::Close()
         {
-            is_running = false;
+            m_running = false;
         }
 
         void Application::SetSize(int width, int height)
         {
             window_width = width;
             window_height = height;
-            if (renderer != nullptr)
+            if (m_renderer != nullptr)
                 glfwSetWindowSize(window, width, height);
         }
         void Application::SetTitle(const std::string& title)
         {
             window_title = title;
-            if(renderer != nullptr)
+            if(m_renderer != nullptr)
                 glfwSetWindowTitle(window, title.c_str());
         }
 }
