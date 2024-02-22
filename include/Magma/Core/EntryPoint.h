@@ -6,6 +6,7 @@
 #include "Magma/API/OpenGLRenderAPI.h"
 #include "Magma/API/VulkanRenderAPI.h"
 #include "Magma/Core/Logging.h"
+#include "Magma/Utility/Random.h"
 
 // To be defined by the user as an entrypoint
 // arguments: argc and argv
@@ -15,7 +16,8 @@ namespace mg { extern mg::RenderAPI* renderer; }
 int main(int argc,char** argv)
 {
 	mg::Log::Init();
-	
+	mg::Random::SetSeed();
+
 	mg::app = CreateApplication(argc, argv);
 
 	#if defined(MAGMA_OPENGL_ENABLED)

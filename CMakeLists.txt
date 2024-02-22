@@ -32,6 +32,7 @@ set(MAGMA_SOURCE
     src/Application/ImageImplVulkan.cpp
     src/Application/ImageImplOpenGL.cpp
     src/Utility/Input.cpp
+    src/Utility/Random.cpp
 )
 
 #vendor
