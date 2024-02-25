@@ -179,9 +179,9 @@ namespace mg
 		style->Colors[ImGuiCol_TextSelectedBg] = ImVec4(0.00f, 0.50f, 0.50f, 0.43f);
 		style->Colors[ImGuiCol_SeparatorHovered] = ImVec4(0.50f, 0.70f, 0.90f, 0.78f);
 		style->Colors[ImGuiCol_SeparatorActive] = ImVec4(0.40f, 0.60f, 0.80f, 1.00f);
-		style->Colors[ImGuiCol_Tab] = ImVec4(0.20f, 0.40f, 0.60f, 0.26f);
-		style->Colors[ImGuiCol_TabHovered] = ImVec4(0.30f, 0.60f, 0.80f, 0.40f);
-		style->Colors[ImGuiCol_TabActive] = ImVec4(0.30f, 0.60f, 0.80f, 0.70f);
+		style->Colors[ImGuiCol_Tab] = ImVec4(0.30f, 0.50f, 0.70f, 0.70f);
+		style->Colors[ImGuiCol_TabHovered] = ImVec4(0.30f, 0.50f, 0.80f, 0.70f);
+		style->Colors[ImGuiCol_TabActive] = ImVec4(0.20f, 0.50f, 1.0f, 0.70f);
 		style->Colors[ImGuiCol_TabUnfocused] = ImVec4(0.40f, 0.60f, 0.80f, 0.97f);
 		style->Colors[ImGuiCol_TabUnfocusedActive] = ImVec4(0.50f, 0.70f, 0.90f, 1.00f);
 		style->Colors[ImGuiCol_DockingPreview] = ImVec4(0.30f, 0.50f, 0.95f, 1.00f);
