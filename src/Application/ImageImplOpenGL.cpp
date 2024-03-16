@@ -20,6 +20,19 @@ namespace mg
                     return 0;
             }
         }
+
+        static unsigned int GetTypeFromFormat(ImageFormat fmt)
+        {
+            switch (fmt)
+            {
+            case ImageFormat::RGBA:     return GL_UNSIGNED_BYTE;
+            case ImageFormat::RGBA32F:  return GL_FLOAT;
+
+            case ImageFormat::None:
+                MAGMA_CORE_WARN("ImageFormat::None");
+                return 0;
+            }
+        }
     
         static unsigned int GetGLFromFilter(ImageFilter filter)
         {
@@ -82,7 +95,7 @@ namespace mg
     void Image::SetData(const void* data)
     {
         glBindTexture(GL_TEXTURE_2D, m_TextureID);
-        glTexImage2D(GL_TEXTURE_2D, 0, Utils::GetGLFromFormat(m_Format), m_Width, m_Height, 0, Utils::GetGLFromFormat(m_Format), GL_UNSIGNED_BYTE, data);
+        glTexImage2D(GL_TEXTURE_2D, 0, Utils::GetGLFromFormat(m_Format), m_Width, m_Height, 0, GL_RGBA, Utils::GetTypeFromFormat(m_Format), data);
         glGenerateMipmap(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, 0);
     }
@@ -112,7 +125,8 @@ namespace mg
 
     void Image::ReleaseTexture()
     {
-        if (m_TextureID != 0) {
+        if (m_TextureID != 0) 
+        {
             glDeleteTextures(1, &m_TextureID);
             m_TextureID = 0;
         }
