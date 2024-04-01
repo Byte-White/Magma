@@ -16,9 +16,10 @@
 
 #include "Application/Application.h"
 #include "Application/Themes.h"
+#include "Application/Image.h"
 #ifdef MAGMA_ENTRYPOINT
 #include "Core/EntryPoint.h"
 #endif
-#include "Application/Image.h"
+#include "Core/PlatformDetection.h"
 #include "Utility/Input.h"
 #include "Utility/Random.h"
