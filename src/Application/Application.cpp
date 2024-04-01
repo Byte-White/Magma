@@ -1,7 +1,6 @@
 #include "Magma/Application/Application.h"
-#include "Magma/Core/VulkanImpl.h"
-#include "Magma/API/RenderAPI.h"
 #include "Magma/Utility/Input.h"
+#include "Magma/Resources/FiraCode.embed"
 
 namespace mg
 {
@@ -14,30 +13,37 @@ namespace mg
 
 		Application::Application()
 		{
+            if (APISetup() == false)
+            {
+                MAGMA_CORE_ERROR("Setup failed.");
+                exit(1);
+            }
+            else MAGMA_CORE_INFO("Setup complete.");
             
-		}
+            m_initialized = true;
+        }
 		Application::~Application()
 		{
-            
+            mg::app->APICleanup();
 		}
+
 		void Application::Run()
 		{
-            Input::SetWindow(window);
+            Input::SetWindow(m_window);
             Init();
             #ifdef __EMSCRIPTEN__
             ImGui::GetIO().IniFilename = nullptr;
             EMSCRIPTEN_MAINLOOP_BEGIN
             #else
-            while (!glfwWindowShouldClose(window) && m_running)
+            while (!glfwWindowShouldClose(m_window) && m_running)
             #endif
             {
-                m_renderer->NewFrame();
+                APINewFrame();
 
                 // User Application Render
                 Render();
 
-                // Rendering
-                m_renderer->Render();
+                APIRenderFrame();
             }
             #ifdef __EMSCRIPTEN__
             EMSCRIPTEN_MAINLOOP_END
@@ -52,15 +58,30 @@ namespace mg
 
         void Application::SetSize(int width, int height)
         {
-            window_width = width;
-            window_height = height;
-            if (m_renderer != nullptr)
-                glfwSetWindowSize(window, width, height);
+            m_windowWidth = width;
+            m_windowHeight = height;
+            if (m_initialized)
+                glfwSetWindowSize(m_window, width, height);
         }
         void Application::SetTitle(const std::string& title)
         {
-            window_title = title;
-            if(m_renderer != nullptr)
-                glfwSetWindowTitle(window, title.c_str());
+            m_windowTitle = title;
+            if(m_initialized)
+                glfwSetWindowTitle(m_window, title.c_str());
+        }
+
+        void Application::SetupTheme()
+        {
+            // Color Theme
+            CrimsonShadowTheme();
+            // DarkForestTheme();
+            // DeepOceanTheme();
+            // Loading Font
+
+            ImGuiIO& io = ImGui::GetIO();
+            ImFontConfig fontConfig;
+            fontConfig.FontDataOwnedByAtlas = false;
+            ImFont* firacodeFont = io.Fonts->AddFontFromMemoryTTF((void*)g_FiraCode, sizeof(g_FiraCode) / sizeof(unsigned char), 20.0f, &fontConfig);
+            io.FontDefault = firacodeFont;
         }
 }

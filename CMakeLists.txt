@@ -23,12 +23,11 @@ endif()
 
 
 set(MAGMA_SOURCE
-    src/Core/VulkanImpl.cpp
     src/Core/Logging.cpp
-    src/API/RenderAPI.cpp
-    src/API/VulkanRenderAPI.cpp
-    src/API/OpenGLRenderAPI.cpp
     src/Application/Application.cpp
+    src/Application/Themes.cpp
+    src/Application/API/ApplicationImplVulkan.cpp
+    src/Application/API/ApplicationImplOpenGL.cpp
     src/Application/ImageImplVulkan.cpp
     src/Application/ImageImplOpenGL.cpp
     src/Utility/Input.cpp

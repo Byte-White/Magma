@@ -1,9 +1,8 @@
 // Image Vulkan implementation
 #ifdef MAGMA_VULKAN_ENABLED
 #include "Magma/Application/Image.h"
-#include "Magma/Core/VulkanImpl.h"
-#include "Magma/API/VulkanRenderAPI.h"
 #include "vulkan/vulkan.h"
+#include "Magma/Application/Application.h"
 
 namespace mg {
 
@@ -13,7 +12,7 @@ namespace mg {
 		static uint32_t GetVulkanMemoryType(VkMemoryPropertyFlags properties, uint32_t type_bits)
 		{
 			VkPhysicalDeviceMemoryProperties prop;
-			vkGetPhysicalDeviceMemoryProperties(vk::g_PhysicalDevice, &prop);
+			vkGetPhysicalDeviceMemoryProperties(app->GetPhysicalDevice(), &prop);
 			for (uint32_t i = 0; i < prop.memoryTypeCount; i++)
 			{
 				if ((prop.memoryTypes[i].propertyFlags & properties) == properties && type_bits & (1 << i))
@@ -72,9 +71,7 @@ namespace mg {
 
     Image::Image(std::string path, ImageFilter filter)
 	: m_Filepath(std::move(path)), m_Filter(filter)
-    {
-		renderer = (VulkanRenderAPI*)app->GetRenderer();
-
+    {		
 		int width, height, channels;
 		uint8_t* data = nullptr;
 
@@ -135,18 +132,18 @@ namespace mg {
 			info.usage = VK_IMAGE_USAGE_SAMPLED_BIT | VK_IMAGE_USAGE_TRANSFER_DST_BIT;
 			info.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 			info.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
-			err = vkCreateImage(vk::g_Device, &info, nullptr, &m_Image);
-			vk::check_vk_result(err);
+			err = vkCreateImage(app->GetDevice(), &info, nullptr, &m_Image);
+			check_vk_result(err);
 			VkMemoryRequirements req;
-			vkGetImageMemoryRequirements(vk::g_Device, m_Image, &req);
+			vkGetImageMemoryRequirements(app->GetDevice(), m_Image, &req);
 			VkMemoryAllocateInfo alloc_info = {};
 			alloc_info.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
 			alloc_info.allocationSize = req.size;
 			alloc_info.memoryTypeIndex = Utils::GetVulkanMemoryType(VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, req.memoryTypeBits);
-			err = vkAllocateMemory(vk::g_Device, &alloc_info, nullptr, &m_Memory);
-			vk::check_vk_result(err);
-			err = vkBindImageMemory(vk::g_Device, m_Image, m_Memory, 0);
-			vk::check_vk_result(err);
+			err = vkAllocateMemory(app->GetDevice(), &alloc_info, nullptr, &m_Memory);
+			check_vk_result(err);
+			err = vkBindImageMemory(app->GetDevice(), m_Image, m_Memory, 0);
+			check_vk_result(err);
 		}
 
 		// Create the Image View:
@@ -159,8 +156,8 @@ namespace mg {
 			info.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
 			info.subresourceRange.levelCount = 1;
 			info.subresourceRange.layerCount = 1;
-			err = vkCreateImageView(vk::g_Device, &info, nullptr, &m_ImageView);
-			vk::check_vk_result(err);
+			err = vkCreateImageView(app->GetDevice(), &info, nullptr, &m_ImageView);
+			check_vk_result(err);
 		}
 
 		// Create sampler:
@@ -176,8 +173,8 @@ namespace mg {
 			info.minLod = -1000;
 			info.maxLod = 1000;
 			info.maxAnisotropy = 1.0f;
-			err = vkCreateSampler(vk::g_Device, &info, nullptr, &m_Sampler);
-			vk::check_vk_result(err);
+			err = vkCreateSampler(app->GetDevice(), &info, nullptr, &m_Sampler);
+			check_vk_result(err);
 		}
 
 		// Create the Descriptor Set:
@@ -187,15 +184,15 @@ namespace mg {
 
 	void Image::Release()
 	{
-		renderer->SubmitResourceFree([sampler = m_Sampler, imageView = m_ImageView, image = m_Image,
+		app->SubmitResourceFree([sampler = m_Sampler, imageView = m_ImageView, image = m_Image,
 			memory = m_Memory, stagingBuffer = m_StagingBuffer, stagingBufferMemory = m_StagingBufferMemory]()
 			{
-				vkDestroySampler(vk::g_Device, sampler, nullptr);
-				vkDestroyImageView(vk::g_Device, imageView, nullptr);
-				vkDestroyImage(vk::g_Device, image, nullptr);
-				vkFreeMemory(vk::g_Device, memory, nullptr);
-				vkDestroyBuffer(vk::g_Device, stagingBuffer, nullptr);
-				vkFreeMemory(vk::g_Device, stagingBufferMemory, nullptr);
+				vkDestroySampler(app->GetDevice(), sampler, nullptr);
+				vkDestroyImageView(app->GetDevice(), imageView, nullptr);
+				vkDestroyImage(app->GetDevice(), image, nullptr);
+				vkFreeMemory(app->GetDevice(), memory, nullptr);
+				vkDestroyBuffer(app->GetDevice(), stagingBuffer, nullptr);
+				vkFreeMemory(app->GetDevice(), stagingBufferMemory, nullptr);
 			});
 
 		m_Sampler = nullptr;
@@ -221,19 +218,19 @@ namespace mg {
 				buffer_info.size = upload_size;
 				buffer_info.usage = VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
 				buffer_info.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
-				err = vkCreateBuffer(vk::g_Device, &buffer_info, nullptr, &m_StagingBuffer);
-				vk::check_vk_result(err);
+				err = vkCreateBuffer(app->GetDevice(), &buffer_info, nullptr, &m_StagingBuffer);
+				check_vk_result(err);
 				VkMemoryRequirements req;
-				vkGetBufferMemoryRequirements(vk::g_Device, m_StagingBuffer, &req);
+				vkGetBufferMemoryRequirements(app->GetDevice(), m_StagingBuffer, &req);
 				m_AlignedSize = req.size;
 				VkMemoryAllocateInfo alloc_info = {};
 				alloc_info.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
 				alloc_info.allocationSize = req.size;
 				alloc_info.memoryTypeIndex = Utils::GetVulkanMemoryType(VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT, req.memoryTypeBits);
-				err = vkAllocateMemory(vk::g_Device, &alloc_info, nullptr, &m_StagingBufferMemory);
-				vk::check_vk_result(err);
-				err = vkBindBufferMemory(vk::g_Device, m_StagingBuffer, m_StagingBufferMemory, 0);
-				vk::check_vk_result(err);
+				err = vkAllocateMemory(app->GetDevice(), &alloc_info, nullptr, &m_StagingBufferMemory);
+				check_vk_result(err);
+				err = vkBindBufferMemory(app->GetDevice(), m_StagingBuffer, m_StagingBufferMemory, 0);
+				check_vk_result(err);
 			}
 
 		}
@@ -241,22 +238,22 @@ namespace mg {
 		// Upload to Buffer
 		{
 			char* map = NULL;
-			err = vkMapMemory(vk::g_Device, m_StagingBufferMemory, 0, m_AlignedSize, 0, (void**)(&map));
-			vk::check_vk_result(err);
+			err = vkMapMemory(app->GetDevice(), m_StagingBufferMemory, 0, m_AlignedSize, 0, (void**)(&map));
+			check_vk_result(err);
 			memcpy(map, data, upload_size);
 			VkMappedMemoryRange range[1] = {};
 			range[0].sType = VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE;
 			range[0].memory = m_StagingBufferMemory;
 			range[0].size = m_AlignedSize;
-			err = vkFlushMappedMemoryRanges(vk::g_Device, 1, range);
-			vk::check_vk_result(err);
-			vkUnmapMemory(vk::g_Device, m_StagingBufferMemory);
+			err = vkFlushMappedMemoryRanges(app->GetDevice(), 1, range);
+			check_vk_result(err);
+			vkUnmapMemory(app->GetDevice(), m_StagingBufferMemory);
 		}
 
 
 		// Copy to Image
 		{
-			VkCommandBuffer command_buffer = renderer->GetCommandBuffer(true);
+			VkCommandBuffer command_buffer = app->GetCommandBuffer(true);
 
 			VkImageMemoryBarrier copy_barrier = {};
 			copy_barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
@@ -293,7 +290,7 @@ namespace mg {
 			use_barrier.subresourceRange.layerCount = 1;
 			vkCmdPipelineBarrier(command_buffer, VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT, 0, 0, NULL, 0, NULL, 1, &use_barrier);
 
-			renderer->FlushCommandBuffer(command_buffer);
+			app->FlushCommandBuffer(command_buffer);
 		}
 	}
 

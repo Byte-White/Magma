@@ -2,10 +2,8 @@
 
 #ifdef MAGMA_VULKAN_ENABLED
 #include <vulkan/vulkan.h>
-#include "Magma/API/VulkanRenderAPI.h"
-#include "Magma/Core/VulkanImpl.h"
 #elif MAGMA_OPENGL_ENABLED
-#include "Magma/API/OpenGLRenderAPI.h"
+#include "glad/glad.h"
 #endif
 
 #include <stb_image.h>
@@ -70,7 +68,6 @@ namespace mg {
 
         #ifdef MAGMA_VULKAN_ENABLED
         // Vulkan specific
-        VulkanRenderAPI* renderer;
 
         VkImage m_Image = nullptr;
         VkImageView m_ImageView = nullptr;
