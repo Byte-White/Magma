@@ -115,6 +115,15 @@ mg::Application* CreateApplication(int argc, char** argv)
 
 [Lightning-Engine repository](https://github.com/Byte-White/Lightning-Engine)
 
+### Embed - a server code generator for Arduino
+
+![draganddrop](https://github.com/Byte-White/Embed/assets/51212450/22e453ed-a5a3-4da1-8168-1f0e426f2645)
+
+![export](https://github.com/Byte-White/Embed/assets/51212450/99567722-64e1-4516-85b3-978746726085)
+
+[Embed repository](https://github.com/Byte-White/Embed)
+
+
 ## Contributing
 
 We welcome contributions from the community. If you encounter any issues or have suggestions for improvement, please open an issue or submit a pull request on the [GitHub repository](https://github.com/Byte-White/Magma).
